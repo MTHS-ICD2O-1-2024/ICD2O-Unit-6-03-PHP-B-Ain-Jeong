@@ -8,7 +8,8 @@
   <meta name="author" content="Ain Jeong" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/style.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material.Icons" />
+  <link rel="stylesh
+  eet" href="https://fonts.googleapis.com/icon?family=Material.Icons" />
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-deep_orange.min.css" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -30,36 +31,37 @@
         <img src="https://openweathermap.org/img/wn/03d@2x.png" alt="cloud image" width="95%" height="auto">
       </div>
       <br />
-    <?
-      $resultJson = await fetch(
-    'https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5'
-      );
-      $jsonData = await $resultJson.json();
-      console.log(jsonData);
+        <?
+        // reference from (https://stackoverflow.com/questions/48784774/calling-an-api-in-php-without-curl)
+        $apiUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5';
+        $dataFromApi = file_get_contents($apiUrl);
+        if ($dataFromApi !== false) {
+          $jsonData = json_decode($dataFromApi, true);
 
-      // bring the information from jsonData
-      $iconCode = jsonData.weather[0].icon;
-      $location = jsonData.name;
-      $coordinate = jsonData.coord;
-      $weatherMain = jsonData.weather[0].main;
-      $weatherDescription = jsonData.weather[0].description;
-      $tempCelsius = (jsonData.main.temp - 273.15).toFixed(1);
-      $windSpeed = jsonData.wind.speed;
+          // ring the information from jsonData
+          $iconCode = $jsonData['weather'][0]['icon'];
+          $location = $jsonData['name'];
+          $coordinate = $jsonData['coord'];
+          $weatherMain = $jsonData['weather'][0]['main'];
+          $weatherDescription = $jsonData['weather'][0]['description'];
+          $tempCelsius = ($jsonData['main']['temp'] - 273.15);
+          $windSpeed = $jsonData['wind']['speed'];
 
-      // output
-      echo('weather-icon').src = 'https://openweathermap.org/img/wn/' . $iconCode . '@2x.png';
-      echo 'Location: ' . $location . ' (lat: ' . $coordinate.lat . ', lon: ' . $coordinate.lon . ')<br />' .
-        'Weather: ' . $weatherMain . '; ' . $weatherDescription . '<br />' .
-        'Temperature: ' . $tempCelsius . ' °C<br />' .
-        'Wind speed: ' . $windSpeed . ' m/h<br />';
-    ?>
-  </div>
-      </div>
-      <div class="page-content-return">
-        <a href="./index.php">Return ...</a>
-      </div>
-    </main>
-  </div>
+          // output
+          echo '<img src="https://openweathermap.org/img/wn/' . $iconCode . '@2x.png" alt="weather icon">';
+          echo '<p>Location: ' . $location . ' (lat: ' . $coordinate['lat'] . ', lon: ' . $coordinate['lon'] . ')</p>';
+          echo '<p>Weather: ' . $weatherMain . ' - ' . $weatherDescription . '</p>';
+          echo '<p>Temperature: ' . number_format($tempCelsius, 1) . ' °C</p>';
+          echo '<p>Wind Speed: ' . $windSpeed . ' m/s</p>';
+        } else {
+          echo '<p>Error fetching weather data.</p>';
+        }
+        ?>
+    </div>
+    <div class="page-content-return">
+      <a href="./index.php">Return ...</a>
+    </div>
+  </main>
 </body>
 
 </html>

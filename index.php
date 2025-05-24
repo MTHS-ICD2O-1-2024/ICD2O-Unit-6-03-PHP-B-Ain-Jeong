@@ -30,18 +30,17 @@
         <img src="https://openweathermap.org/img/wn/03d@2x.png" alt="cloud image" width="95%" height="auto">
       </div>
       <br />
-      <!-- Accent-colored raised button with ripple -->
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-        type="submit">
-        Weather Today
-      </button>
+      <form action="answer.php" method="get">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+          type="submit">
+          Weather Today
+        </button>
       </form>
       <div class="page-content-answer">
         <div id="weather-today-number"></div>
         <div id="weather-today"></div>
       </div>
-  </div>
-  </main>
+    </main>
   </div>
 </body>
 
